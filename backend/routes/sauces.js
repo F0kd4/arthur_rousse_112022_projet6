@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const stuffCtrl = require('../controllers/stuff');
+const sauceCtrl = require('../controllers/sauces');
 
-router.post('/', stuffCtrl.createSauce);
+router.post('/', sauceCtrl.createSauce);
 
 module.exports = router;
