@@ -15,7 +15,7 @@ exports.createSauce = (req, res, next) => {
         ...sauceObject,
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        
+
     });
 
     sauce.save()
@@ -23,8 +23,14 @@ exports.createSauce = (req, res, next) => {
         .catch(error => res.status(400).json({ error }))
 };
 
+exports.findOneSauce = (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id })
+        .then(sauce => res.status(200).json(sauce))
+        .catch(error => res.status(400).json({ error }));
+};
+
 exports.deleteSauce = (req, res, next) => {
-    Sauce.deleteOne({ _id: req.params.name })
+    Sauce.deleteOne({ _id: req.params.id })
         .then(() => res.status(200).json({ message: 'Sauce supprimée.' }))
         .catch(error => res.status(400).json({ error }));
 };
