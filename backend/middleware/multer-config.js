@@ -1,11 +1,15 @@
 const multer = require('multer');
 
+
+//Dictionnaire des formats de fichiers image
 const MIME_TYPE = {
     'image/gif' : 'gif',
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png'
 }
+
+
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
