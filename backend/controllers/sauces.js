@@ -74,3 +74,11 @@ exports.modifySauce = (req, res, next) => {
         })
         .catch(error => res.status(400).json({ error }));
 };
+
+//Fonction Like/Dislike
+exports.likeDislikeFct = (req, res, next) => {
+    let lie = req.body.like
+    let userId = req.body.userId
+    let sauceId = req.params.id
+    console.log(req.body);
+};
