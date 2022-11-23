@@ -1,13 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const dotenv = require("dotenv");
+const dotenv = require('dotenv');
 dotenv.config();
 
 const stuffRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 const path = require('path');
-
 
 
 
@@ -22,6 +21,7 @@ mongoose.connect(process.env.MONGODB_URL,
 
 const app = express();
 
+//CORS?
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Cross-Origin-Resource-Policy', 'same-site');
