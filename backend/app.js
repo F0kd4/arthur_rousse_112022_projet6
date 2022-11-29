@@ -1,15 +1,16 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 
 dotenv.config();
 
 const stuffRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 const path = require('path');
+const { strictEqual } = require('assert');
 
 
 
@@ -24,21 +25,21 @@ mongoose.connect(process.env.MONGODB_URL,
 
 const app = express();
 
-app.use(helmet());
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "same-site" }
+}));
 
-//CORS?
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Cross-Origin-Resource-Policy', 'same-site');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    next();
-});
+app.use(cors({
+    origin: 'http://localhost:4200',
+}))
+
+
+
 
 //https://www.npmjs.com/package/express-rate-limit
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 50, // Limit each IP to 50 requests per `window` (here, per 10 minutes)
     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
@@ -49,7 +50,7 @@ app.use(limiter)
 
 
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use('/api/sauces', stuffRoutes);
 app.use('/api/auth', userRoutes);
