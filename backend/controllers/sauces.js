@@ -68,6 +68,8 @@ exports.modifySauce = (req, res, next) => {
             if (sauce.userId != req.auth.userId) {
                 res.status(401).json({ message: 'Non-Autorisé' });
             } else {
+                const filename = sauce.imageUrl.split('/images/')[1];
+                fs.unlinkSync(`images/${filename}`);
                 Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Sauce modifiée avec succès.' }))
                     .catch(error => res.status(401).json({ error }));
